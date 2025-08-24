@@ -1,0 +1,10 @@
+[project]
+name = "Infos_Vagas_Dados"
+version = "1.0.0"
+description = "Aplicação para auxiliar no mapeamento de requisitos para vagas na área de dados"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "customtkinter>=5.2.2",
+    "streamlit>=1.48.1",
+]
