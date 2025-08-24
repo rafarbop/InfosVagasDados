@@ -5,6 +5,8 @@ description = "Aplicação para auxiliar no mapeamento de requisitos para vagas 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "commitizen>=4.8.3",
     "customtkinter>=5.2.2",
+    "pre-commit>=4.3.0",
     "streamlit>=1.48.1",
 ]
