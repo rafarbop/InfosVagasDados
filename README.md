@@ -31,7 +31,7 @@ Este projeto é uma ferramenta em **Python** e **Streamlit** para auxiliar na co
 
 ### Hospedando Online
 
-A URL para acesso ao aplicativo hospedado no streamlit é: `https://share.streamlit.io/`
+A URL para acesso ao aplicativo hospedado no streamlit é: `https://infos-vagas-dados.streamlit.app`
 
 ### Próximos Passos
 
