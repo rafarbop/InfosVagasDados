@@ -26,7 +26,7 @@ def reset_to_step1():
     st.session_state['vaga_temp'] = None
     st.session_state['campos_personalizados'] = 0
     st.rerun()
-    
+
 # --- Sidebar ---
 st.sidebar.header("Configuração de Dados")
 
@@ -100,26 +100,26 @@ else:
             with col2:
                 senioridade_opcoes = ["Estágio", "Junior", "Pleno", "Senior", "Arquiteto", "Outro/Não Informado"]
                 senioridade_selecionada = st.selectbox("Senioridade", senioridade_opcoes)
-                
-                # Otimização da lógica de senioridade
+
                 if senioridade_selecionada == "Outro/Não Informado":
                     senioridade_input = st.text_input('Especifique a Senioridade:')
                 else:
                     senioridade_input = None
-                
+
                 forma_trabalho_opcoes = ["Presencial", "Híbrida", "Remoto", "Não Informado"]
                 forma_trabalho = st.selectbox("Forma de Trabalho", forma_trabalho_opcoes)
-            
+
             cidade_trabalho = st.text_input('Cidade de Trabalho')
             url_vaga = st.text_input('URL da Vaga')
-            
+
             st.markdown("---")
             tab1, tab2 = st.tabs(["Informações da Vaga", "HTML da Vaga"])
-            
+
             with tab1:
                 st.markdown("Separe os itens por linha ou use `;`")
-                requisitos = st.text_area('Requisitos')
                 responsabilidades = st.text_area('Responsabilidades')
+                requisitos_basicos = st.text_area('Requisitos Básicos')
+                requisitos_adicionais = st.text_area('Requisitos Adicionais')
                 beneficios = st.text_area('Benefícios')
             with tab2:
                 html_vaga = st.text_area('Cole o HTML completo da vaga aqui:', height=300)
@@ -138,8 +138,9 @@ else:
                     'cidade_trabalho': cidade_trabalho,
                     'forma_trabalho': forma_trabalho,
                     'url_vaga': url_vaga,
-                    'requisitos': split_field(requisitos),
                     'responsabilidades': split_field(responsabilidades),
+                    'requisitos_basicos': split_field(requisitos_basicos),
+                    'requisitos_adicionais': split_field(requisitos_adicionais),
                     'beneficios': split_field(beneficios),
                     'html_vaga': html_vaga
                 }
@@ -148,10 +149,37 @@ else:
     # --- Etapa 2: Visualizar e Adicionar Campos Personalizados ---
     elif st.session_state['vaga_temp'] is not None:
         st.header("2. Visualizar e Adicionar Campos")
-        
+
         with st.expander("Pré-visualização do JSON da Vaga"):
             st.json(st.session_state['vaga_temp'])
-        
+
+        with st.expander("Pré-visualização do HTML da Vaga"):
+            background_option = st.radio("Escolha a cor de fundo:", ("Cinza", "Branco", "Preto"))
+
+            if background_option == "Preto":
+                st.markdown(
+                    f'<div style="background-color: black; padding: 10px; border-radius: 5px;">'
+                    f'<pre style="color: white;">{st.session_state["vaga_temp"]["html_vaga"]}</pre>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+
+            elif background_option == "Branco":
+                st.markdown(
+                    f'<div style="background-color: white; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">'
+                    f'{st.session_state["vaga_temp"]["html_vaga"]}'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+
+            elif background_option == "Cinza":
+                st.markdown(
+                    f'<div style="background-color: gray; padding: 10px; border-radius: 5px;">'
+                    f'{st.session_state["vaga_temp"]["html_vaga"]}'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+
         st.markdown("---")
         st.subheader("Adicionar Campos Personalizados")
         if st.button("Adicionar Mais um Campo"):
@@ -165,7 +193,7 @@ else:
                     st.text_input(f"Nome do Campo {i+1}", key=f"key_{i}")
                 with col_value:
                     st.text_input(f"Valor do Campo {i+1}", key=f"value_{i}")
-            
+
             submit_custom = st.form_submit_button("Confirmar Campos Personalizados")
 
         if submit_custom:
@@ -180,8 +208,8 @@ else:
         st.markdown("---")
 
         # --- Etapa 3: Adicionar ao Arquivo Principal ---
-        col_add_vaga_arquivo, col_back_btn = st.columns([1, 1])
-        with col_add_vaga_arquivo:
+        col_add_main_file, col_back_btn = st.columns([1, 1])
+        with col_add_main_file:
             if st.button("Adicionar Vaga ao Arquivo Principal"):
                 st.session_state['dados_vagas'].append(st.session_state['vaga_temp'])
                 st.success("Vaga adicionada com sucesso ao arquivo!")
