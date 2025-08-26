@@ -1,7 +1,6 @@
 import streamlit as st
 import json
-import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # --- Configurações Iniciais ---
 st.set_page_config(layout="wide")
@@ -67,7 +66,8 @@ else:
     if len(st.session_state['dados_vagas']) > 0:
         st.sidebar.markdown("---")
         st.sidebar.subheader("Baixar Arquivo")
-        data_atual = datetime.now().strftime("%Y%m%d")
+        fuso_brasilia = timezone(timedelta(hours=-3))
+        data_atual = datetime.now(fuso_brasilia).strftime("%Y%m%d")
         default_filename = f"infos_vagas_dados_{data_atual}.json"
         download_filename = st.sidebar.text_input("Nome do arquivo para download:", value=default_filename)
         json_para_download = json.dumps(st.session_state['dados_vagas'], indent=4, ensure_ascii=False).encode('utf-8')
